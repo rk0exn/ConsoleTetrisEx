@@ -1,15 +1,13 @@
 # ConsoleTetrisEx
 
-This is a [Tetris](https://tetris.com/) game that runs at a command prompt (cmd.exe).
+これはコマンドプロンプト (cmd.exe)上で動作する[テトリス](https://tetris.com)です。
 
-![screenshot](screenshots/screenshot.png)
+![スクリーンショット](screenshots/screenshot.png)
 
-## Requirements
-- Not run on safeboot
-- File create, read and write permission
-- Not running on virtual machine (without [Microsoft Hyper-V](https://learn.microsoft.com/windows-server/virtualization/hyper-v/hyper-v-overview?pivots=windows))
+## 動作条件
+- セーフブートを使用していないこと
+- 配置するディレクトリにファイルの作成、読み書きする権限があること
+- 仮想環境ではないこと([Microsoft Hyper-V](https://learn.microsoft.com/windows-server/virtualization/hyper-v/hyper-v-overview?pivots=windows)は都合上許可しています)
 
-
-# Original credit
-
-Thanks to [Ryoga-exe](https://github.com/Ryoga-exe) for allowing me to fork [Console-Tetris](https://github.com/Ryoga-exe/Console-Tetris/).
+# オリジナルのクレジット
+[Ryoga-exe](https://github.com/Ryoga-exe)様に[Console-Tetris](https://github.com/Ryoga-exe/Console-Tetris/)をフォークしていただくのを許可していただきました！ありがとうございます。
