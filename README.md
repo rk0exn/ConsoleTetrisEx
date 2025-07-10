@@ -5,6 +5,7 @@
 ![スクリーンショット](screenshots/screenshot.png)
 
 ## 動作条件
+- **Windows 11以降のOSであること(dwmapiの使用で必須となりました)**
 - セーフブートを使用していないこと
 - 配置するディレクトリにファイルの作成、読み書きする権限があること
 - 仮想環境ではないこと([Microsoft Hyper-V](https://learn.microsoft.com/windows-server/virtualization/hyper-v/hyper-v-overview?pivots=windows)は都合上許可しています)
