@@ -1,5 +1,6 @@
 #pragma once
-#include <windows.h>
+#include <Windows.h>
+#include <profileapi.h>
 
 class Timer {
 public:
@@ -20,7 +21,7 @@ public:
 		QueryPerformanceCounter(&m_unionCounter);
 		return ((ULONGLONG)(m_unionCounter.QuadPart) - m_startCount) / m_frequency;
 	}
-	ULONGLONG GetStartTime() {
+	ULONGLONG GetStartTime() const {
 		return m_startCount;
 	}
 	bool Pause() {

@@ -1,26 +1,31 @@
 #pragma once
 #include "Console.h"
-#define STAGE_W	22
+#include <rpcndr.h>
+#include <wincontypes.h>
+#include <Windows.h>
+#include "Timer.h"
+#define STAGE_W 22
 #define STAGE_H	21
 #define FIELD_W	10
 #define FIELD_H	25
-#define FIELD_H_SEEN	20
+#define FIELD_H_SEEN 20
 
-#define MINO_SIZE		4
-#define MINO_TYPE		7
-#define MINO_ANGLE		4
+#define MINO_SIZE 4
+#define MINO_TYPE 7
+#define MINO_ANGLE 4
 
 enum Scenes {
 	e_TITLE,
 	e_GAME,
-	e_GAMEOVER
+	e_GAMEOVER,
+	e_HELP
 };
 
-typedef struct {
+struct MinoInfo_t {
 	byte minoType = 0, minoAngle = 0;
-}MinoInfo_t;
+};
 
-struct LockDown_t{
+struct LockDown_t {
 	void  Init() {
 		m_isLockDown = false;
 		m_count = m_prevCount = 0;
@@ -34,13 +39,13 @@ struct LockDown_t{
 	void Update() {
 		m_prevCount = m_count;
 	}
-	bool hasChanged() {
+	bool hasChanged() const {
 		return m_count != m_prevCount;
 	}
-	bool isOverStep() {
+	bool isOverStep() const {
 		return m_count > 14;
 	}
-	bool UpdateMaxY(int y){
+	bool UpdateMaxY(int y) {
 		bool ret = m_maxY < y;
 		if (ret) Init();
 		return ret;
@@ -73,7 +78,7 @@ public:
 	}
 
 	bool LoadFile();
-	bool SaveFile();
+	bool SaveFile() const;
 	bool Update();
 	void Draw();
 private:
@@ -85,25 +90,27 @@ private:
 	void SpeedUpdate();
 	void DrawTitle();
 	void DrawStage();
-	void DrawMino(COORD minoPos, MinoInfo_t minoInfo, bool isFix = true, bool isGhost = false);
-	void DrawField();
+	void DrawMino(COORD minoPos, MinoInfo_t minoInfo, bool isFix = true, bool isGhost = false) const;
+	void DrawField() const;
 	void DrawCurrentMino();
 	void DrawNextMinos();
 	void DrawHoldMino();
 	void DrawGhostMino();
 	void MinoOpe();
 	bool MinoDown();
-	bool IsHit(COORD minoPos, MinoInfo_t minoInfo);
+	bool IsHit(COORD minoPos, MinoInfo_t minoInfo) const;
 	void FixMino();
 	void MinoUpdate();
 	bool MinoMoveX(SHORT x);
 	bool MinoRotate(bool isClockWise);
 	void HoldChange();
 	char DeleteLine();
-	bool IsPerfectClear();
+	bool IsPerfectClear() const;
 	void StartGameOver();
 	void GameOverUpdate();
-	void GameOverDraw();
+	void GameOverDraw() const;
+	void ShowHelp();
+	void DrawHelp();
 
 private:
 	enum Blocks {
@@ -131,7 +138,7 @@ private:
 		T_SPIN_SINGLE,
 		T_SPIN_DOUBLE,
 		T_SPIN_TRIPLE,
-		
+
 		ACTION_NUM
 	};
 	enum Tspin {
@@ -141,17 +148,17 @@ private:
 	};
 
 	const WORD BLOCK_COLOR[BLOCK_NUM] = {
-		GetColor(H_WHITE, L_BLACK),		// NONE
-		GetColor(L_BLACK, H_WHITE),		// BLOCK
-		GetColor(H_YELLOW, L_BLACK),	// TEXT
-		GetColor(H_CYAN, H_CYAN ),		// I
-		GetColor(H_YELLOW, H_YELLOW),	// O
-		GetColor(H_GREEN, H_GREEN),		// S
-		GetColor(L_RED, L_RED),			// Z
-		GetColor(L_BLUE, L_BLUE),		// J
-		GetColor(L_YELLOW, L_YELLOW),	// L
-		GetColor(L_PURPLE, L_PURPLE),	// T
-		GetColor(L_WHITE, L_WHITE),		// CLRD
+		GetColor(H_WHITE, L_BLACK),
+		GetColor(L_BLACK, H_WHITE),
+		GetColor(H_YELLOW, L_BLACK),
+		GetColor(H_CYAN, H_CYAN),
+		GetColor(H_YELLOW, H_YELLOW),
+		GetColor(H_GREEN, H_GREEN),
+		GetColor(L_RED, L_RED),
+		GetColor(L_BLUE, L_BLUE),
+		GetColor(L_YELLOW, L_YELLOW),
+		GetColor(L_PURPLE, L_PURPLE),
+		GetColor(L_WHITE, L_WHITE),
 	};
 
 	const char* ACTION_NOTIFICATIONS[ACTION_NUM] = {
@@ -169,9 +176,9 @@ private:
 
 	Scenes m_scene = e_TITLE;
 	Timer  m_gameTimer;
-	
+
 	Blocks m_field[FIELD_W][FIELD_H];
-	Blocks minoShapes[MINO_TYPE][MINO_ANGLE][MINO_SIZE][MINO_SIZE] {
+	Blocks minoShapes[MINO_TYPE][MINO_ANGLE][MINO_SIZE][MINO_SIZE]{
 		{		// I
 			{	NONE,NONE,NONE,NONE,
 				MN_I,MN_I,MN_I,MN_I,

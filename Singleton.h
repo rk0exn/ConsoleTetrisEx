@@ -11,5 +11,5 @@ public:
 	static _T* Instance() {
 		static _T inst;
 		return &inst;
-	};
+	}
 };

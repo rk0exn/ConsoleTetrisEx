@@ -1,52 +1,31 @@
 #pragma once
-#include <Windows.h>
 #include <conio.h>
 #include "Timer.h"
 #include "Singleton.h"
 #include "Keyboard.h"
-
-enum {
-	L_BLACK,	// 低輝度・黒色
-	L_BLUE,		// 低輝度・青色
-	L_GREEN,	// 低輝度・緑色
-	L_CYAN,		// 低輝度・水色
-	L_RED,		// 低輝度・赤色
-	L_PURPLE,	// 低輝度・紫色
-	L_YELLOW,	// 低輝度・黄色
-	L_WHITE,	// 低輝度・白色
-
-	H_BLACK,	// 高輝度・黒色
-	H_BLUE,		// 高輝度・青色
-	H_GREEN,	// 高輝度・緑色
-	H_CYAN,		// 高輝度・水色
-	H_RED,		// 高輝度・赤色
-	H_PURPLE,	// 高輝度・紫色
-	H_YELLOW,	// 高輝度・黄色
-	H_WHITE,	// 高輝度・白色
-};
-
+#include <consoleapi2.h>
+#include <synchapi.h>
+#include <wincontypes.h>
+#include <Windows.h>
+enum { L_BLACK, L_BLUE, L_GREEN, L_CYAN, L_RED, L_PURPLE, L_YELLOW, L_WHITE, H_BLACK, H_BLUE, H_GREEN, H_CYAN, H_RED, H_PURPLE, H_YELLOW, H_WHITE };
 struct FPS_t {
 	Timer tm;
-	int   count = 0;
+	int count = 0;
 	float currentFPS = 0;
 	int N = 60, FPSRate = 60;
 };
-
 WORD GetColor(int foregroundColor, int backgroundColor);
 WORD GetForegroundColor(WORD color);
 WORD GetBackgroundColor(WORD color);
-
-int  GetRand();
-int  GetRand(int max);
-int  GetRand(int min, int max);
+int GetRand();
+int GetRand(int max);
+int GetRand(int min, int max);
 COORD AddCoord(COORD coord1, COORD coord2);
-
 class Console : public Singleton<Console> {
 	Console();
 	~Console();
 	friend Singleton<Console>;
 public:
-	/* 設定系 */
 	BOOL SetWindowSize(SHORT sizeX, SHORT sizeY);
 	BOOL SetWindowBufferSize(SHORT sizeX, SHORT sizeY);
 	BOOL SetWindowBufferSizeAuto();
@@ -54,35 +33,29 @@ public:
 	BOOL SetCursorVisible(BOOL visible);
 	BOOL SetCursorSize(DWORD size);
 	BOOL SetCursorInvisible();
-	BOOL SetCursorPostion(COORD coord);
-	BOOL SetCursorPostion(SHORT x, SHORT y);
+	BOOL SetCursorPosition(COORD coord);
+	BOOL SetCursorPosition(SHORT sizeX, SHORT sizeY);
 	BOOL SetTextColor(WORD color);
 	void SetBGColor(WORD color);
-
-	/* 情報取得系 */
-	SMALL_RECT GetWindowSize();
-	void       GetWindowSize(SHORT &top, SHORT &bottom, SHORT &left, SHORT &right);
-	BOOL  GetCursorVisible();
-	DWORD GetCursorSize();
-	COORD GetCursorPosition();
-	void  GetCursorPosition(SHORT &x, SHORT &y);
-	WORD  GetTextColor();
-	/* メイン処理系 */
+	SMALL_RECT GetWindowSize() const;
+	void GetWindowSize(SHORT& top, SHORT& bottom, SHORT& left, SHORT& right) const;
+	BOOL GetCursorVisible() const;
+	DWORD GetCursorSize() const;
+	COORD GetCursorPosition() const;
+	void GetCursorPosition(SHORT& x, SHORT& y) const;
+	WORD GetTextColor() const;
 	bool ProcessLoop();
 	void SetFPSRate(int fps);
-	float GetFPSRate();
-	/* キー入力系 */
-	int GetKeyEvent();
-	/* 描画系 */
+	float GetFPSRate() const;
+	int GetKeyEvent() const;
 	BOOL DrawPixel(SHORT x, SHORT y, WORD color);
 	BOOL DrawBox(SHORT x, SHORT y, SHORT width, SHORT height, WORD color);
-	BOOL Print(SHORT x, SHORT y, WORD color, const char *str);
-	BOOL Printf(SHORT x, SHORT y, WORD color, const char *format, ...);
-
-
-
+	BOOL Print(SHORT x, SHORT y, WORD color, const char* str);
+	BOOL Printf(SHORT x, SHORT y, WORD color, const char* format, ...);
+	void GetOriginalWindowAndBufferSize();
+	BOOL RestoreToDefaultWindow();
 private:
-	HANDLE GetHandle() {
+	HANDLE GetHandle() const {
 		return m_flipScreen ? m_hConsoleStdOut : m_hConsoleStdOut2;
 	}
 	bool FlipScreen() {
@@ -91,9 +64,9 @@ private:
 		return false;
 	}
 	bool ClearScreen() {
-		DWORD	dwNumberOfCharsWritten;
+		DWORD dwNumberOfCharsWritten;
 		FillConsoleOutputAttribute(GetHandle(), m_bgColor, m_csbi.dwMaximumWindowSize.X * m_csbi.dwMaximumWindowSize.Y, { 0, 0 }, &dwNumberOfCharsWritten);
-		FillConsoleOutputCharacter(GetHandle(), ' ', m_csbi.dwMaximumWindowSize.X * m_csbi.dwMaximumWindowSize.Y, { 0, 0 }, &dwNumberOfCharsWritten);
+		FillConsoleOutputCharacter(GetHandle(), ' ', m_csbi.dwMaximumWindowSize.X * m_csbi.dwMaximumWindowSize.Y, { 0,0 }, &dwNumberOfCharsWritten);
 		return false;
 	}
 	BOOL SetWindowSize(SMALL_RECT sr) {
@@ -119,7 +92,7 @@ private:
 			Sleep(waitTime);
 		}
 	}
-	int  GetInputKey() {
+	int GetInputKey() {
 		if (_kbhit() == 0) return KEY_NOT_INPUTED;
 		int key = _getch();
 		switch (key) {
@@ -143,14 +116,12 @@ private:
 			return key;
 		}
 	}
-
 private:
-	HANDLE                      m_hConsoleStdOut,
-								m_hConsoleStdOut2;
-	CONSOLE_SCREEN_BUFFER_INFO	m_csbi;
-	CONSOLE_CURSOR_INFO	        m_cci;
+	HANDLE m_hConsoleStdOut, m_hConsoleStdOut2;
+	CONSOLE_SCREEN_BUFFER_INFO m_csbi, orig_csbi;
+	CONSOLE_CURSOR_INFO m_cci;
 	FPS_t m_fps;
-	WORD  m_bgColor = GetColor(L_WHITE, L_BLACK);
-	int   m_keyEvent;
-	bool  m_flipScreen;
+	WORD m_bgColor = GetColor(L_WHITE, L_BLACK);
+	int m_keyEvent;
+	bool m_flipScreen;
 };
