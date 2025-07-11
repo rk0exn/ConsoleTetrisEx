@@ -8,27 +8,42 @@
 // 1つのキーだけを割り当てる場合はKeyboard.hの定義を優先してください。
 // また、できるだけBIGの方を使用してください。(通常の文字キーの場合はBIGとSMALLの両方が必要になります。)
 // 特殊なキーに割り当てると、正常に動作しない可能性があります。検証を行うことを推奨します。
+// 複数のキーで同じ動作ができるようにEXでキーを追加しました。
 
 #define KEYMAP_LEFT_BIG				KEY_INPUT_LEFT
 #define KEYMAP_LEFT_SMALL			UNUSED_OPT
+#define KEYMAP_L_EX_BIG				UNUSED_OPT
+#define KEYMAP_L_EX_SMALL			UNUSED_OPT
 
 #define KEYMAP_RIGHT_BIG			KEY_INPUT_RIGHT
 #define KEYMAP_RIGHT_SMALL			UNUSED_OPT
+#define KEYMAP_R_EX_BIG				UNUSED_OPT
+#define KEYMAP_R_EX_SMALL			UNUSED_OPT
 
 #define KEYMAP_DOWN_BIG				KEY_INPUT_DOWN
 #define KEYMAP_DOWN_SMALL			UNUSED_OPT
+#define KEYMAP_D_EX_BIG				UNUSED_OPT
+#define KEYMAP_D_EX_SMALL			UNUSED_OPT
 
 #define KEYMAP_DROP_BIG				' '
 #define KEYMAP_DROP_SMALL			UNUSED_OPT
+#define KEYMAP_O_EX_BIG				UNUSED_OPT
+#define KEYMAP_O_EX_SMALL			UNUSED_OPT
 
 #define KEYMAP_RIGHT_SPIN_BIG		'X'
 #define KEYMAP_RIGHT_SPIN_SMALL		'x'
+#define KEYMAP_R_EX_SPIN_BIG		KEY_INPUT_UP
+#define KEYMAP_R_EX_SPIN_SMALL		UNUSED_OPT
 
 #define KEYMAP_LEFT_SPIN_BIG		'Z'
 #define KEYMAP_LEFT_SPIN_SMALL		'z'
+#define KEYMAP_L_EX_SPIN_BIG		UNUSED_OPT
+#define KEYMAP_L_EX_SPIN_SMALL		UNUSED_OPT
 
 #define KEYMAP_HOLD_BIG				'C'
 #define KEYMAP_HOLD_SMALL			'c'
+#define KEYMAP_H_EX_BIG				UNUSED_OPT
+#define KEYMAP_H_EX_SMALL			UNUSED_OPT
 
 // キーマップを変更した場合は下のM_KEYMAP_CUSTOMIZEDのコメントを解除してください。
 

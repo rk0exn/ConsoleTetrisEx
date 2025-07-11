@@ -313,6 +313,19 @@ void Game::MinoOpe() {
 		m_tSpinAct = NOTSPIN;
 		break;
 #endif
+#if KEYMAP_L_EX_BIG != UNUSED_OPT
+	case KEYMAP_L_EX_BIG:
+		MinoMoveX(-1);
+		m_tSpinAct = NOTSPIN;
+		break;
+#endif
+#if KEYMAP_L_EX_SMALL != UNUSED_OPT
+	case KEYMAP_L_EX_SMALL:
+		MinoMoveX(-1);
+		m_tSpinAct = NOTSPIN;
+		break;
+#endif
+
 #if KEYMAP_RIGHT_BIG != UNUSED_OPT
 	case KEYMAP_RIGHT_BIG:
 		MinoMoveX(+1);
@@ -325,6 +338,19 @@ void Game::MinoOpe() {
 		m_tSpinAct = NOTSPIN;
 		break;
 #endif
+#if KEYMAP_R_EX_BIG != UNUSED_OPT
+	case KEYMAP_R_EX_BIG:
+		MinoMoveX(+1);
+		m_tSpinAct = NOTSPIN;
+		break;
+#endif
+#if KEYMAP_R_EX_SMALL != UNUSED_OPT
+	case KEYMAP_R_EX_SMALL:
+		MinoMoveX(+1);
+		m_tSpinAct = NOTSPIN;
+		break;
+#endif
+
 #if KEYMAP_DOWN_BIG != UNUSED_OPT
 	case KEYMAP_DOWN_BIG:
 		if (!IsHit({ m_currentMinoPos.X, static_cast<SHORT>(m_currentMinoPos.Y + 1) }, m_currentMino)) m_prevMinoDownTime = -m_speedWaitMs;
@@ -339,6 +365,21 @@ void Game::MinoOpe() {
 		m_tSpinAct = NOTSPIN;
 		break;
 #endif
+#if KEYMAP_D_EX_BIG != UNUSED_OPT
+	case KEYMAP_D_EX_BIG:
+		if (!IsHit({ m_currentMinoPos.X, static_cast<SHORT>(m_currentMinoPos.Y + 1) }, m_currentMino)) m_prevMinoDownTime = -m_speedWaitMs;
+		m_score++;
+		m_tSpinAct = NOTSPIN;
+		break;
+#endif
+#if KEYMAP_D_EX_SMALL != UNUSED_OPT
+	case KEYMAP_D_EX_SMALL:
+		if (!IsHit({ m_currentMinoPos.X, static_cast<SHORT>(m_currentMinoPos.Y + 1) }, m_currentMino)) m_prevMinoDownTime = -m_speedWaitMs;
+		m_score++;
+		m_tSpinAct = NOTSPIN;
+		break;
+#endif
+
 #if KEYMAP_DROP_BIG != UNUSED_OPT
 	case KEYMAP_DROP_BIG:
 		for (; m_currentMinoPos.Y < FIELD_H_SEEN && !IsHit({ m_currentMinoPos.X, static_cast<SHORT>(m_currentMinoPos.Y + 1) }, m_currentMino); m_currentMinoPos.Y++, m_score += 2);
@@ -351,6 +392,19 @@ void Game::MinoOpe() {
 		m_prevMinoDownTime = -m_speedWaitMs;
 		break;
 #endif
+#if KEYMAP_O_EX_BIG != UNUSED_OPT
+	case KEYMAP_O_EX_BIG:
+		for (; m_currentMinoPos.Y < FIELD_H_SEEN && !IsHit({ m_currentMinoPos.X, static_cast<SHORT>(m_currentMinoPos.Y + 1) }, m_currentMino); m_currentMinoPos.Y++, m_score += 2);
+		m_prevMinoDownTime = -m_speedWaitMs;
+		break;
+#endif
+#if KEYMAP_O_EX_SMALL != UNUSED_OPT
+	case KEYMAP_O_EX_SMALL:
+		for (; m_currentMinoPos.Y < FIELD_H_SEEN && !IsHit({ m_currentMinoPos.X, static_cast<SHORT>(m_currentMinoPos.Y + 1) }, m_currentMino); m_currentMinoPos.Y++, m_score += 2);
+		m_prevMinoDownTime = -m_speedWaitMs;
+		break;
+#endif
+
 #if KEYMAP_RIGHT_SPIN_BIG != UNUSED_OPT
 	case KEYMAP_RIGHT_SPIN_BIG:
 		m_tSpinAct = NOTSPIN;
@@ -363,6 +417,19 @@ void Game::MinoOpe() {
 		MinoRotate(true);
 		break;
 #endif
+#if KEYMAP_R_EX_SPIN_BIG != UNUSED_OPT
+	case KEYMAP_R_EX_SPIN_BIG:
+		m_tSpinAct = NOTSPIN;
+		MinoRotate(true);
+		break;
+#endif
+#if KEYMAP_R_EX_SPIN_SMALL != UNUSED_OPT
+	case KEYMAP_R_EX_SPIN_SMALL:
+		m_tSpinAct = NOTSPIN;
+		MinoRotate(true);
+		break;
+#endif
+
 #if KEYMAP_LEFT_SPIN_BIG != UNUSED_OPT
 	case KEYMAP_LEFT_SPIN_BIG:
 		m_tSpinAct = NOTSPIN;
@@ -375,6 +442,19 @@ void Game::MinoOpe() {
 		MinoRotate(false);
 		break;
 #endif
+#if KEYMAP_L_EX_SPIN_BIG != UNUSED_OPT
+	case KEYMAP_L_EX_SPIN_BIG:
+		m_tSpinAct = NOTSPIN;
+		MinoRotate(false);
+		break;
+#endif
+#if KEYMAP_L_EX_SPIN_SMALL != UNUSED_OPT
+	case KEYMAP_L_EX_SPIN_SMALL:
+		m_tSpinAct = NOTSPIN;
+		MinoRotate(false);
+		break;
+#endif
+
 #if KEYMAP_HOLD_BIG != UNUSED_OPT
 	case KEYMAP_HOLD_BIG:
 		m_tSpinAct = NOTSPIN;
@@ -387,6 +467,19 @@ void Game::MinoOpe() {
 		HoldChange();
 		break;
 #endif
+#if KEYMAP_H_EX_BIG != UNUSED_OPT
+	case KEYMAP_H_EX_BIG:
+		m_tSpinAct = NOTSPIN;
+		HoldChange();
+		break;
+#endif
+#if KEYMAP_H_EX_SMALL != UNUSED_OPT
+	case KEYMAP_H_EX_SMALL:
+		m_tSpinAct = NOTSPIN;
+		HoldChange();
+		break;
+#endif
+
 	default:
 		break;
 	}
