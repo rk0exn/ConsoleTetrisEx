@@ -24,13 +24,17 @@
 #include <thread>
 #include <Windows.h>
 #include <winreg.h>
+#if _DEBUG
 #include <debugapi.h>
+#include "Version.h"
+#endif
 #include <minwinbase.h>
 #include <synchapi.h>
 #pragma comment(lib, "dwmapi.lib")
 #pragma comment(lib, "iphlpapi.lib")
 #pragma comment(lib, "psapi.lib")
 #pragma comment(lib, "wintrust.lib")
+#pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 using namespace std;
 
@@ -328,7 +332,8 @@ int main() {
 	Console::Instance()->SetCursorInvisible();
 
 #ifdef _DEBUG
-	string s = string("Console Tetris Ex_v1.2");
+	string s = string("Console Tetris ");
+	s += CTEX_VER;
 	BOOL b;
 	CheckRemoteDebuggerPresent(GetCurrentProcess(), &b);
 	if (b) {
@@ -340,14 +345,18 @@ int main() {
 #endif
 
 	Game game;
-	if (game.LoadFile()) return -1;
+	if (game.LoadFile()) {
+		MessageBoxA(csHandle, "ファイルを読み込めなかったため、デフォルトの最高スコアが使われます。", "読み込みエラー", MB_ICONEXCLAMATION);
+	}
 	while (Console::Instance()->ProcessLoop()) {
 		Console::Instance()->SetWindowAndBufferSize(STAGE_W, STAGE_H);
 		Console::Instance()->SetCursorInvisible();
 		game.Update();
 		game.Draw();
 	}
-	game.SaveFile();
+	if (game.SaveFile()) {
+		MessageBoxA(csHandle, "ファイルを書き込めなかったため、最高スコアの保存に失敗しました。", "書き込みエラー", MB_ICONEXCLAMATION);
+	}
 
 	Console::Instance()->SetCursorVisible(TRUE);
 	dwcp = DWMWCP_DEFAULT;

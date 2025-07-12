@@ -10,6 +10,7 @@
 #include "Console.h"
 #include "Keyboard.h"
 #include "KeyboardEx.h"
+#include "Version.h"
 const char* file = "score.dat";
 
 Game::Game() {
@@ -18,7 +19,7 @@ Game::Game() {
 }
 
 bool Game::LoadFile() {
-	FILE* fp;
+	FILE* fp = nullptr;
 	if (fopen_s(&fp, file, "rb") != NULL) {
 		if (fopen_s(&fp, file, "wb") != NULL) {
 			return true;
@@ -26,23 +27,23 @@ bool Game::LoadFile() {
 		m_topScore = 10000;
 		fwrite(&m_topScore, sizeof(m_topScore), 1, fp);
 		fclose(fp);
+		return false;
 	}
-	else {
-		fread(&m_topScore, sizeof(m_topScore), 1, fp);
-		fclose(fp);
-	}
-	return false;
+
+	size_t readCount = fread(&m_topScore, sizeof(m_topScore), 1, fp);
+	bool errorOccurred = (readCount != 1) && ferror(fp);
+	fclose(fp);
+
+	return errorOccurred;
 }
 bool Game::SaveFile() const {
-	FILE* fp;
-	if (fopen_s(&fp, file, "wb") != NULL) {
+	FILE* fp = nullptr;
+	if (fopen_s(&fp, file, "wb") != 0) {
 		return true;
 	}
-	else {
-		fwrite(&m_topScore, sizeof(m_topScore), 1, fp);
-		fclose(fp);
-	}
-	return false;
+	size_t writeCount = fwrite(&m_topScore, sizeof(m_topScore), 1, fp);
+	fclose(fp);
+	return writeCount != 1;
 }
 bool Game::Update() {
 	m_addtionalScore = 0;
@@ -204,10 +205,10 @@ void Game::DrawTitle() {
 
 	Console::Instance()->Print(9, 16, GetColor((m_gameTimer.Elapse() & (static_cast<unsigned long long>(1) << 9)) > 256 ? H_WHITE : L_BLACK, L_CYAN), "- PRESS ANY KEY TO START -");
 
-	Console::Instance()->Print(37, 18, GetColor(L_RED, L_BLACK), "v1.2Ex");
-	Console::Instance()->Print(6, 20, GetColor(L_CYAN, L_BLACK), " Custom: rk0exn, Original: Ryoga.exe ");
+	Console::Instance()->Print(37, 18, GetColor(L_RED, L_BLACK), CTEX_VER);
+	Console::Instance()->Print(COPYRIGHT_BEGIN, 20, GetColor(L_CYAN, L_BLACK), COPYRIGHT_STR);
 #ifdef M_KEYMAP_CUSTOMIZED
-	Console::Instance()->Print(0, 0, GetColor(L_CYAN, L_BLACK), "Keymap customized");
+	Console::Instance()->Print(0, 0, GetColor(L_CYAN, L_BLACK), " Keymap customized ");
 #endif
 
 }
