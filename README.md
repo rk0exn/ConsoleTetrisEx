@@ -1,5 +1,5 @@
 # ConsoleTetrisEx
-
+**最新版はEx_v1.2です** <br>
 これはコマンドプロンプト (cmd.exe)上で動作する[テトリス](https://tetris.com)です。
 
 ![スクリーンショット](screenshots/screenshot.png)
