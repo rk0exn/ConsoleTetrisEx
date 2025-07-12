@@ -3,6 +3,7 @@
 これはコマンドプロンプト (cmd.exe)上で動作する[テトリス](https://tetris.com)です。
 
 ![スクリーンショット](screenshots/screenshot.png)
+※このスクリーンショットは高DPI環境のため、実際より高画質となっています。(125%)
 
 ## 動作条件
 - **Windows 11以降のOSであること(dwmapiの使用で必須となりました)**
