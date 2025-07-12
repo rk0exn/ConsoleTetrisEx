@@ -205,7 +205,7 @@ void Game::DrawTitle() {
 	Console::Instance()->Print(9, 16, GetColor((m_gameTimer.Elapse() & (static_cast<unsigned long long>(1) << 9)) > 256 ? H_WHITE : L_BLACK, L_CYAN), "- PRESS ANY KEY TO START -");
 
 	Console::Instance()->Print(37, 18, GetColor(L_RED, L_BLACK), "v1.2Ex");
-	Console::Instance()->Print(7, 20, GetColor(L_CYAN, L_BLACK), " Custom: 25i04, Original: Ryoga.exe ");
+	Console::Instance()->Print(6, 20, GetColor(L_CYAN, L_BLACK), " Custom: rk0exn, Original: Ryoga.exe ");
 #ifdef M_KEYMAP_CUSTOMIZED
 	Console::Instance()->Print(0, 0, GetColor(L_CYAN, L_BLACK), "Keymap customized");
 #endif
